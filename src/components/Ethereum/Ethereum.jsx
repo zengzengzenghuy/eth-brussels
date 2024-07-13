@@ -22,6 +22,7 @@ export function EthereumView({ props: { setStatus, MPC_CONTRACT } }) {
   const [derivation, setDerivation] = useState("invest-account");
   const [selectedAddress, setSelectedAddress] = useState("");
   const [addressBook, setAddressBook] = useState({});
+  const [balance, setBalance] = useState(0);
 
   const derivationPath = useDebounce(derivation, 1000);
   const [save, setSave] = useState(false);
@@ -45,9 +46,11 @@ export function EthereumView({ props: { setStatus, MPC_CONTRACT } }) {
       );
       setSenderAddress(address);
 
-      const balance = await Eth.getBalance(address);
+      const getBalance = await Eth.getBalance(address);
+      setBalance(balance);
+
       setStatus(
-        `Your Ethereum address is: ${address}, balance: ${balance} ETH`
+        `Your Ethereum address is: ${address}, balance: ${getBalance} ETH`
       );
     }
   }, [signedAccountId, derivationPath, setStatus]);
@@ -87,8 +90,6 @@ export function EthereumView({ props: { setStatus, MPC_CONTRACT } }) {
   // },[selectedAddress])
 
   async function handleSenderAddressChange(value) {
-    let index = value.length - 42;
-    setSelectedAddress(value.slice(index));
     console.log("Selected ", selectedAddress);
   }
   async function onSaveAddress() {
@@ -148,6 +149,12 @@ export function EthereumView({ props: { setStatus, MPC_CONTRACT } }) {
     setLoading(false);
   };
 
+  async function onHandleFund() {
+    let startIndex = selectedAddress.length - 42;
+    console.log("Send fund to: ", selectedAddress.slice(startIndex));
+
+    await Eth.transferFromFaucet(selectedAddress.slice(startIndex));
+  }
   return (
     <>
       <div className="row mb-3">
@@ -191,6 +198,12 @@ export function EthereumView({ props: { setStatus, MPC_CONTRACT } }) {
         </div>
       ) : (
         <p>No derived address</p>
+      )}
+
+      {balance == 0 && selectedAddress != "" ? (
+        <button onClick={onHandleFund}>Fund me</button>
+      ) : (
+        <></>
       )}
       <div className="input-group input-group-sm my-2 mb-4">
         <span className="text-primary input-group-text" id="chain">

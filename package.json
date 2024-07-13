@@ -17,10 +17,12 @@
     "@near-wallet-selector/here-wallet": "^8.9.5",
     "@near-wallet-selector/modal-ui": "^8.9.5",
     "@near-wallet-selector/my-near-wallet": "^8.9.5",
+    "@vitejs/plugin-react": "^4.2.1",
     "axios": "^1.6.8",
     "bitcoinjs-lib": "^6.1.5",
     "bn.js": "^5.2.1",
     "bs58check": "^3.0.1",
+    "dotenv": "^16.4.5",
     "elliptic": "^6.5.5",
     "ethers": "^6.11.1",
     "hash.js": "^1.1.7",
@@ -31,8 +33,7 @@
     "react-dom": "^18.2.0",
     "rxjs": "^7.8.1",
     "vite-plugin-node-polyfills": "^0.21.0",
-    "web3": "^4.6.0",
-    "@vitejs/plugin-react": "^4.2.1"
+    "web3": "^4.6.0"
   },
   "overrides": {
     "near-api-js": "^3.0.4"
