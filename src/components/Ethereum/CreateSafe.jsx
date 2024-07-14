@@ -70,9 +70,9 @@ export const CreateSafeForm = forwardRef(
     }));
     return (
       <>
-        <label className="col-sm-2 col-form-label col-form-label-sm">
+        <div className="form-text">
           Create new Safe with {senderAddress} as owner
-        </label>
+        </div>
       </>
     );
   }

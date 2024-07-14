@@ -167,9 +167,7 @@ export function EthereumView({ props: { setStatus, MPC_CONTRACT } }) {
   return (
     <>
       <div className="row mb-3">
-        <label className="col-sm-2 col-form-label col-form-label-sm">
-          Name your Account:
-        </label>
+        <div className="form-text">Your account name</div>
         <div className="col-sm-10">
           <input
             type="text"
@@ -180,37 +178,57 @@ export function EthereumView({ props: { setStatus, MPC_CONTRACT } }) {
           />
         </div>
       </div>
-
-      <div className="form-text" id="eth-sender">
-        Derived address:
-        {senderAddress}
+      <div className="row mb-3">
+        <div className="form-text" id="eth-sender">
+          Derived address on ETH: {senderAddress}
+        </div>
       </div>
 
       <div>
-        <button onClick={onSaveAddress}>Save Derived address</button>
+        <button
+          style={{
+            "border-radius": "8px",
+            backgroundColor: "#0080FF",
+            color: "white",
+            marginBottom: "10px",
+          }}
+          onClick={onSaveAddress}>
+          Save Derived address
+        </button>
       </div>
-      {addressBook[signedAccountId]?.length != 0 ? (
-        <div>
-          <p>Choose your address</p>
 
-          <select
-            className="form-select"
-            aria-describedby="senderAddress"
-            value={selectedAddress}
-            onChange={(e) => setSelectedAddress(e.target.value)}>
-            {addressBook[signedAccountId]?.map((option, index) => (
-              <option key={index} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
-        </div>
-      ) : (
-        <p>No derived address</p>
-      )}
+      <div className="row mb-3">
+        {addressBook[signedAccountId]?.length != 0 ? (
+          <div>
+            <p>Choose your address on ETH</p>
 
+            <select
+              className="form-select"
+              aria-describedby="senderAddress"
+              value={selectedAddress}
+              onChange={(e) => setSelectedAddress(e.target.value)}>
+              {addressBook[signedAccountId]?.map((option, index) => (
+                <option key={index} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+          </div>
+        ) : (
+          <p>No derived address</p>
+        )}
+      </div>
       {balance == 0 && selectedAddress != "" ? (
-        <button onClick={onHandleFund}>Fund me</button>
+        <button
+          style={{
+            "border-radius": "8px",
+            backgroundColor: "#0080FF",
+            color: "white",
+            marginBottom: "10px",
+          }}
+          onClick={onHandleFund}>
+          Fund me
+        </button>
       ) : (
         <></>
       )}
@@ -222,11 +240,11 @@ export function EthereumView({ props: { setStatus, MPC_CONTRACT } }) {
           className="form-select"
           aria-describedby="chain"
           onChange={(e) => setAction(e.target.value)}>
-          <option value="transfer"> Ξ Transfer </option>
-          <option value="function-call"> Ξ Call Counter </option>
+          <option value="swap"> Ξ Swap Token </option>
           <option value="create-safe"> Ξ Create Safe </option>
           <option value="arbitrary"> Ξ Arbitrary Call </option>
-          <option value="swap"> Ξ Swap Token </option>
+          <option value="transfer"> Ξ Transfer </option>
+          <option value="function-call"> Ξ Call Counter </option>
         </select>
       </div>
 

@@ -108,9 +108,7 @@ export const ArbitraryCallForm = forwardRef(
         <div className="row mb-3">
           <div className="form-text">Contract address</div>
           <input onChange={(e) => setContractAddr(e.target.value)}></input>
-          <label className="col-sm-2 col-form-label col-form-label-sm">
-            Input Contract ABI:
-          </label>
+          <div className="form-text">Input Contract ABI:</div>
           <div className="col-sm-10">
             <input
               type="text"
@@ -119,7 +117,17 @@ export const ArbitraryCallForm = forwardRef(
               onChange={(e) => setAbi(e.target.value)}
               //   disabled
             />
-            <button onClick={onFilterMethods}>Filter</button>
+            <button
+              style={{
+                "border-radius": "8px",
+                backgroundColor: "#0080FF",
+                color: "white",
+                marginTop: "10px",
+                marginBottom: "10px",
+              }}
+              onClick={onFilterMethods}>
+              Filter contract methods
+            </button>
 
             {contractMethods.length !== 0 ? (
               <select
