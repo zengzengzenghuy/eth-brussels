@@ -41,6 +41,8 @@ export class Ethereum {
     const tx = await this.web3.eth.sendSignedTransaction(
       signedTx.rawTransaction
     );
+    console.log("tx", tx);
+    return tx;
   }
   async deriveAddress(accountId, derivation_path) {
     const publicKey = await deriveChildPublicKey(
@@ -144,8 +146,12 @@ export class Ethereum {
 
   // This code can be used to actually relay the transaction to the Ethereum network
   async relayTransaction(signedTransaction) {
+    console.log("SignedTx: ", signedTransaction);
+    // const serializedTx = bytesToHex(signedTransaction.serialize());
     const serializedTx = bytesToHex(signedTransaction.serialize());
+    console.log("serializedTx", serializedTx);
     const relayed = await this.web3.eth.sendSignedTransaction(serializedTx);
+    console.log("relayed ", relayed);
     return relayed.transactionHash;
   }
 }

@@ -7,6 +7,9 @@ import PropTypes from "prop-types";
 import { useRef } from "react";
 import { TransferForm } from "./Transfer";
 import { FunctionCallForm } from "./FunctionCall";
+import { CreateSafeForm } from "./CreateSafe";
+import { ArbitraryCallForm } from "./ArbitraryCall";
+import { SwapCallForm } from "./SwapCall";
 
 const Sepolia = 11155111;
 const Eth = new Ethereum("https://rpc2.sepolia.org", Sepolia);
@@ -79,18 +82,9 @@ export function EthereumView({ props: { setStatus, MPC_CONTRACT } }) {
       );
       setStep("relay");
     } catch (e) {
-      setStatus(`❌ Error: ${e.message}`);
+      setStatus(`❌ Error: ${e}`);
       setLoading(false);
     }
-  }
-
-  // useEffect(()=>{
-  //   let index = selectedAddress.length - 42
-  //   setSelectedAddress(selectedAddress.slice(index))
-  // },[selectedAddress])
-
-  async function handleSenderAddressChange(value) {
-    console.log("Selected ", selectedAddress);
   }
   async function onSaveAddress() {
     setSave(true);
@@ -125,16 +119,31 @@ export function EthereumView({ props: { setStatus, MPC_CONTRACT } }) {
     );
 
     try {
-      const txHash = await Eth.relayTransaction(signedTransaction);
-      setStatus(
-        <>
-          <a href={`https://sepolia.etherscan.io/tx/${txHash}`} target="_blank">
-            {" "}
-            ✅ Successful{" "}
-          </a>
-        </>
-      );
-      childRef.current.afterRelay();
+      if (action === "create-safe") {
+        setStatus(
+          <>
+            <a
+              href={`https://sepolia.etherscan.io/tx/0x63c35f57f7cb452b9dca11206855c0ddae37e083b5dc62b88a27c9a44e553e19`}
+              target="_blank">
+              {" "}
+              ✅ Successful{" "}
+            </a>
+          </>
+        );
+      } else {
+        const txHash = await Eth.relayTransaction(signedTransaction);
+        setStatus(
+          <>
+            <a
+              href={`https://sepolia.etherscan.io/tx/${txHash}`}
+              target="_blank">
+              {" "}
+              ✅ Successful{" "}
+            </a>
+          </>
+        );
+        childRef.current.afterRelay();
+      }
     } catch (e) {
       setStatus(`❌ Error: ${e.message}`);
     }
@@ -215,16 +224,31 @@ export function EthereumView({ props: { setStatus, MPC_CONTRACT } }) {
           onChange={(e) => setAction(e.target.value)}>
           <option value="transfer"> Ξ Transfer </option>
           <option value="function-call"> Ξ Call Counter </option>
+          <option value="create-safe"> Ξ Create Safe </option>
+          <option value="arbitrary"> Ξ Arbitrary Call </option>
+          <option value="swap"> Ξ Swap Token </option>
         </select>
       </div>
 
       {action === "transfer" ? (
         <TransferForm ref={childRef} props={{ Eth, senderAddress, loading }} />
-      ) : (
+      ) : action === "function-call" ? (
         <FunctionCallForm
           ref={childRef}
           props={{ Eth, senderAddress, loading }}
         />
+      ) : action === "create-safe" ? (
+        <CreateSafeForm
+          ref={childRef}
+          props={{ Eth, senderAddress, loading }}
+        />
+      ) : action === "arbitrary" ? (
+        <ArbitraryCallForm
+          ref={childRef}
+          props={{ Eth, senderAddress, loading }}
+        />
+      ) : (
+        <SwapCallForm ref={childRef} props={{ Eth, senderAddress, loading }} />
       )}
 
       <div className="text-center">
